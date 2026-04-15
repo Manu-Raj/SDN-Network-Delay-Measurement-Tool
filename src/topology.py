@@ -52,7 +52,7 @@ def create_topology():
     measure_all(net)
 
     info("*** Running Throughput Measurement...\n")
-    measure_iperf(net)
+    measure_iperf(net, block_enabled=True)
 
     info("*** Ready 🚀\n")
     CLI(net)

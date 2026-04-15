@@ -51,7 +51,7 @@ def measure_all(net):
 
 
 
-def measure_iperf(net):
+def measure_iperf(net, block_enabled=False):
     import time
     import re
 
@@ -61,8 +61,10 @@ def measure_iperf(net):
 
     tests = [
         ("h1", "h2"),
-        ("h1", "h4"),
     ]
+
+    if not block_enabled:
+        tests.append(("h1", "h4"))
 
     for src, dst in tests:
         server = net.get(dst)

@@ -16,6 +16,9 @@ class DelayController(app_manager.RyuApp):
         self.echo_sent = {}
         self.delay = {}
 
+        # 🔥 FLAG: change this for demo
+        self.block_enabled = True  # True = block h1 -> h4
+
     # ── Switch connects ─────────────────────────────
     @set_ev_cls(ofp_event.EventOFPSwitchFeatures, CONFIG_DISPATCHER)
     def switch_features_handler(self, ev):
@@ -26,7 +29,7 @@ class DelayController(app_manager.RyuApp):
 
         self.mac_to_port[dpid] = {}
 
-        # ✅ CRITICAL: Table-miss flow (send unknown packets to controller)
+        # ✅ Table-miss flow
         match = parser.OFPMatch()
         actions = [parser.OFPActionOutput(
             ofproto.OFPP_CONTROLLER,
@@ -36,7 +39,12 @@ class DelayController(app_manager.RyuApp):
 
         self.logger.info("Switch connected: %s", dpid)
 
-        # Send echo request (for RTT measurement)
+        if self.block_enabled:
+            self.logger.info("🔴 MODE: BLOCKING ENABLED")
+        else:
+            self.logger.info("🟢 MODE: NORMAL")
+
+        # Send echo request
         self.send_echo(datapath)
 
     # ── Echo (delay measurement) ────────────────────
@@ -77,6 +85,12 @@ class DelayController(app_manager.RyuApp):
         src = eth.src
         dpid = datapath.id
 
+        # 🚫 BLOCKING LOGIC (SAFE LOCATION)
+        if self.block_enabled:
+            if src == "00:00:00:00:00:01" and dst == "00:00:00:00:00:04":
+                self.logger.info("🚫 Dropping packet: h1 -> h4")
+                return  # DROP packet
+
         self.mac_to_port.setdefault(dpid, {})
 
         # Learn source MAC
@@ -90,7 +104,7 @@ class DelayController(app_manager.RyuApp):
 
         actions = [parser.OFPActionOutput(out_port)]
 
-        # ✅ Install flow ONLY if destination is known
+        # Install flow if destination known
         if out_port != ofproto.OFPP_FLOOD:
             match = parser.OFPMatch(
                 in_port=in_port,
@@ -99,7 +113,6 @@ class DelayController(app_manager.RyuApp):
             )
             self.add_flow(datapath, 10, match, actions)
 
-        # ✅ CRITICAL FIX: handle buffer properly
         data = None
         if msg.buffer_id == ofproto.OFP_NO_BUFFER:
             data = msg.data
