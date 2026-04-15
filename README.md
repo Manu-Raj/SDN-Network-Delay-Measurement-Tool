@@ -1,143 +1,264 @@
-# 📡 Network Delay Measurement and Analysis using Mininet & Ryu
+#  SDN-Based Network Delay & Performance Measurement Tool
 
-## 🧾 Overview
-This project implements a Software-Defined Networking (SDN)-based Network Delay Measurement Tool using **Mininet** and the **Ryu controller**. The system measures, analyzes, and compares latency across different hosts in a simulated network topology.
+## 📌 Overview
 
-It integrates both:
-- **Data Plane Measurement** using ICMP (ping)
-- **Control Plane Measurement** using OpenFlow Echo messages
+This project implements a **Software Defined Networking (SDN)** application using the **Ryu controller** and **Mininet emulator** to:
+
+* Measure **network delay (RTT)**
+* Measure **throughput (bandwidth using iperf)**
+* Demonstrate **SDN-based traffic control (blocking policy)**
+
+---
+
+## ⚠️ System Requirements (IMPORTANT)
+
+This project is designed to run **preferably on Linux**.
+
+### 🐧 Recommended Environment
+
+* Ubuntu / Debian-based Linux system
+* Python **3.9 (recommended for compatibility with Ryu & Mininet)**
+
+### ❗ Why Linux?
+
+* Mininet relies on Linux kernel features (network namespaces, tc, etc.)
+* Running on Windows/macOS may cause failures or require virtualization
 
 ---
 
 ## 🎯 Objectives
-- Measure Round Trip Time (RTT) between hosts
-- Analyze latency variations across network paths
-- Implement SDN-based flow control using Ryu
-- Simulate realistic network conditions using Mininet
+
+* Implement a **learning switch** using OpenFlow 1.3
+* Measure **RTT using ICMP (ping)**
+* Measure **throughput using iperf**
+* Demonstrate **SDN policy enforcement (traffic blocking)**
+* Analyze performance differences across network paths
 
 ---
 
-## 🏗️ Project Structure
+## 🏗️ Network Topology
+
 ```
-network-delay-measurement/
-│── src/
-│   ├── controller.py      # Ryu SDN Controller
-│   ├── measure.py         # RTT Measurement Script
-│   └── topology.py        # Mininet Topology
-│── README.md
-│── requirements.txt
+h1 ---\
+       \
+        s1 -------- s2
+       /             \
+h2 ---/               \--- h3
+                       \
+                        \--- h4
 ```
+
+### 🔗 Link Configuration
+
+| Link  | Bandwidth | Delay |
+| ----- | --------- | ----- |
+| h1–s1 | 100 Mbps  | 5 ms  |
+| h2–s1 | 100 Mbps  | 5 ms  |
+| h3–s2 | 100 Mbps  | 5 ms  |
+| h4–s2 | 100 Mbps  | 5 ms  |
+| s1–s2 | 50 Mbps   | 10 ms |
 
 ---
 
 ## ⚙️ Technologies Used
-- Python 3
-- Mininet
-- Ryu SDN Controller
-- OpenFlow 1.3
-- Linux Networking Tools (ping)
+
+*  Python 3.9
+*  Ryu SDN Controller
+*  Mininet Network Emulator
+*  OpenFlow 1.3
+*  iperf
 
 ---
 
-## 🌐 Network Topology
-- **2 OpenFlow switches** (s1, s2)
-- **4 hosts** (h1–h4)
-- Controlled delay and bandwidth links:
-  - Host ↔ Switch: 5 ms
-  - Switch ↔ Switch: 10 ms
+## 📂 Project Structure
 
-This allows comparison between intra-switch and inter-switch delays.
-
----
-
-## 🧠 System Design
-
-### 1. SDN Controller (Ryu)
-- Implements a **learning switch**
-- Installs flow rules dynamically
-- Handles packet forwarding
-- Measures **controller-to-switch latency** using OpenFlow Echo
-
-### 2. Delay Measurement Module
-- Uses ICMP ping to compute:
-  - Minimum RTT
-  - Average RTT
-  - Maximum RTT
-  - Packet loss
-- Parses and displays results in tabular format
-
-### 3. Metrics Collected
-- RTT (min/avg/max)
-- Packet loss
-- Delay variation (mdev)
+```
+SDN-Network-Delay-Measurement-Tool/
+│── src/
+│   ├── controller.py      # Ryu controller (SDN logic)
+│   ├── measure.py         # RTT + iperf measurement scripts
+│   └── topology.py        # Mininet Topology
+│── .gitignore
+│── requirements.txt
+└── README.md
+```
 
 ---
 
 ## 🚀 How to Run
 
-### 1. Start Ryu Controller
+### 🔧 Step 1: Install Dependencies
+
+```
+sudo apt update
+sudo apt install mininet iperf
+pip install -r requirements.txt
+
+```
+
+---
+
+### ▶️ Step 2: Start Controller 
+
 ```
 ryu-manager src/controller.py
 ```
 
-### 2. Run Mininet Topology
+---
+
+### ▶️ Step 3: Run Topology
+
 ```
 sudo python3 src/topology.py
 ```
 
-### 3. Run Measurements (inside Mininet CLI)
+---
+
+## 🧪 Execution Modes (IMPORTANT)
+
+The project supports **two modes**:
+
+---
+
+# 🟢 1. Normal Mode (Default)
+
+All traffic is allowed.
+
+### ✔ Configure:
+
+In `controller.py`:
+
+```python id="mg7i6h"
+self.block_enabled = False
 ```
-python3 src/measure.py
+
+In `topology.py`:
+
+```python id="2q91rc"
+measure_iperf(net, block_enabled=False)
 ```
 
 ---
 
-## 📊 Sample Output
+### ✔ Behavior
+
+* All hosts communicate successfully
+* `pingall` → 0% packet loss
+* iperf runs for all test pairs
+
+---
+
+# 🔴 2. Blocking Mode (SDN Policy Demonstration)
+
+The controller blocks:
+
+```id="vx7q41"
+h1 → h4 ❌
 ```
-=== RTT Measurement ===
-Pair            Min     Avg     Max   Loss
---------------------------------------------------
-h1->10.0.0.2   5.12    5.30    5.60    0%
-h1->10.0.0.3  15.20   15.45   15.80    0%
+
+---
+
+### ✔ Configure:
+
+In `controller.py`:
+
+```python id="shp6u8"
+self.block_enabled = True
+```
+
+In `topology.py`:
+
+```python id="iq3q3x"
+measure_iperf(net, block_enabled=True)
 ```
 
 ---
 
-## 📈 Key Observations
-- Hosts on the same switch show lower latency
-- Inter-switch communication introduces additional delay
-- Network delay reflects configured link parameters accurately
-- Controller echo RTT represents control-plane latency
+### ✔ Behavior
+
+| Communication | Result    |
+| ------------- | --------- |
+| h1 → h4       | ❌ Blocked |
+| h4 → h1       | ✅ Allowed |
+| Others        | ✅ Allowed |
 
 ---
 
-## 🧪 Features
-- Dynamic flow installation
-- Real-time RTT measurement
-- Multi-path latency comparison
-- Structured output reporting
-- Configurable network parameters
+### ⚠️ Important Notes
+
+* Blocking is **directional** (only h1 → h4)
+* iperf test for blocked path is skipped to prevent hanging
+* Controller dynamically drops packets matching rule
 
 ---
 
-## ⚠️ Limitations
-- No graphical visualization of results
-- No adaptive routing based on delay
-- Echo requests are not periodic (single measurement per connection)
+## 📊 Performance Measurement
 
 ---
 
-## 🔮 Future Improvements
-- Implement delay-aware routing
-- Add real-time monitoring dashboard
-- Integrate matplotlib for visualization
-- Extend topology with multiple paths
+### 📡 RTT Measurement
+
+* Uses ICMP (`ping`)
+* Extracts min / avg / max / packet loss
 
 ---
 
-## 📚 References
-- Mininet Documentation: http://mininet.org/
-- Ryu Documentation: https://osrg.github.io/ryu/
-- OpenFlow Specification
+### 🚀 Throughput Measurement
 
-"# SDN-Network-Delay-Measurement-Tool" 
+* Uses `iperf`
+* Shows bandwidth differences based on topology
+
+---
+
+## 🧠 Key Observations
+
+* RTT increases with number of hops
+* Throughput is limited by bottleneck link (50 Mbps)
+* SDN enables dynamic traffic control
+* Policy enforcement is achieved via OpenFlow rules
+
+---
+
+## ⚠️ Common Notes
+
+* `sch_htb quantum` warnings can be ignored
+* Always start controller before topology
+* Ensure Python 3.9 environment
+
+---
+
+## 🎤 Viva Highlights
+
+* OpenFlow match-action model
+* Flow priority and rule overriding
+* RTT vs throughput difference
+* SDN control plane vs data plane
+
+---
+
+## 📸 Screenshots
+
+Include:
+
+* Topology running
+* RTT output
+* iperf output
+* Blocking demonstration
+
+---
+
+## 🏁 Conclusion
+
+This project demonstrates how SDN enables:
+
+* Programmable networks
+* Performance monitoring
+* Dynamic policy enforcement
+
+---
+
+## 👨‍💻 Author
+
+Manu
+
+---
