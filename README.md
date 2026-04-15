@@ -1,12 +1,20 @@
 #  SDN-Based Network Delay & Performance Measurement Tool
 
-## 📌 Overview
+## 📌 Problem Statement
 
-This project implements a **Software Defined Networking (SDN)** application using the **Ryu controller** and **Mininet emulator** to:
+In computer networks, measuring **latency (delay)** and **throughput (bandwidth)** is essential for analyzing performance and ensuring efficient communication.
 
-* Measure **network delay (RTT)**
-* Measure **throughput (bandwidth using iperf)**
-* Demonstrate **SDN-based traffic control (blocking policy)**
+This project implements an **SDN-based network monitoring tool** using:
+
+- Ryu Controller
+- Mininet Emulator
+
+The system is designed to:
+
+- Measure **Round Trip Time (RTT)** using ICMP (ping)
+- Measure **throughput** using iperf
+- Analyze **delay variations across different paths**
+- Demonstrate **SDN-based traffic control (blocking policy)**
 
 ---
 
@@ -60,13 +68,14 @@ h2 ---/               \--- h3
 
 ---
 
-## ⚙️ Technologies Used
+## ⚙️ System Requirements
 
-*  Python 3.9
-*  Ryu SDN Controller
-*  Mininet Network Emulator
-*  OpenFlow 1.3
-*  iperf
+- OS: Ubuntu / Linux (Recommended)
+- Python: 3.9
+- Tools:
+  - Mininet
+  - Ryu Controller
+  - iperf
 
 ---
 
@@ -98,7 +107,7 @@ pip install -r requirements.txt
 
 ---
 
-### ▶️ Step 2: Start Controller 
+### ▶️ Step 2: Start Controller (Terminnal 1)
 
 ```
 ryu-manager src/controller.py
@@ -106,7 +115,7 @@ ryu-manager src/controller.py
 
 ---
 
-### ▶️ Step 3: Run Topology
+### ▶️ Step 3: Run Topology  (Terminnal 2)
 
 ```
 sudo python3 src/topology.py
@@ -120,7 +129,7 @@ The project supports **two modes**:
 
 ---
 
-# 🟢 1. Normal Mode (Default)
+### 🟢 1. Normal Mode (Default)
 
 All traffic is allowed.
 
@@ -148,7 +157,7 @@ measure_iperf(net, block_enabled=False)
 
 ---
 
-# 🔴 2. Blocking Mode (SDN Policy Demonstration)
+### 🔴 2. Blocking Mode (SDN Policy Demonstration)
 
 The controller blocks:
 
