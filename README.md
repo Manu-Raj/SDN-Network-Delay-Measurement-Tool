@@ -18,19 +18,18 @@ The system is designed to:
 
 ---
 
-## ⚠️ System Requirements (IMPORTANT)
+## 📂 Project Structure
 
-This project is designed to run **preferably on Linux**.
-
-### 🐧 Recommended Environment
-
-* Ubuntu / Debian-based Linux system
-* Python **3.9 (recommended for compatibility with Ryu & Mininet)**
-
-### ❗ Why Linux?
-
-* Mininet relies on Linux kernel features (network namespaces, tc, etc.)
-* Running on Windows/macOS may cause failures or require virtualization
+```
+SDN-Network-Delay-Measurement-Tool/
+│── src/
+│   ├── controller.py      # Ryu controller (SDN logic)
+│   ├── measure.py         # RTT + iperf measurement scripts
+│   └── topology.py        # Mininet Topology
+│── .gitignore
+│── requirements.txt
+└── README.md
+```
 
 ---
 
@@ -79,18 +78,19 @@ h2 ---/               \--- h3
 
 ---
 
-## 📂 Project Structure
+## ⚠️ System Requirements (IMPORTANT)
 
-```
-SDN-Network-Delay-Measurement-Tool/
-│── src/
-│   ├── controller.py      # Ryu controller (SDN logic)
-│   ├── measure.py         # RTT + iperf measurement scripts
-│   └── topology.py        # Mininet Topology
-│── .gitignore
-│── requirements.txt
-└── README.md
-```
+This project is designed to run **preferably on Linux**.
+
+### 🐧 Recommended Environment
+
+* Ubuntu / Debian-based Linux system
+* Python **3.9 (recommended for compatibility with Ryu & Mininet)**
+
+### ❗ Why Linux?
+
+* Mininet relies on Linux kernel features (network namespaces, tc, etc.)
+* Running on Windows/macOS may cause failures or require virtualization
 
 ---
 
@@ -236,26 +236,6 @@ measure_iperf(net, block_enabled=True)
 
 ---
 
-## 🎤 Viva Highlights
-
-* OpenFlow match-action model
-* Flow priority and rule overriding
-* RTT vs throughput difference
-* SDN control plane vs data plane
-
----
-
-## 📸 Screenshots
-
-Include:
-
-* Topology running
-* RTT output
-* iperf output
-* Blocking demonstration
-
----
-
 ## 🏁 Conclusion
 
 This project demonstrates how SDN enables:
@@ -263,11 +243,5 @@ This project demonstrates how SDN enables:
 * Programmable networks
 * Performance monitoring
 * Dynamic policy enforcement
-
----
-
-## 👨‍💻 Author
-
-Manu
 
 ---
