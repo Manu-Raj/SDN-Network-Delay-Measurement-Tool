@@ -1,6 +1,6 @@
 #  SDN-Based Network Delay & Performance Measurement Tool
 
-## 📌 Problem Statement
+##  Problem Statement
 
 In computer networks, measuring **latency (delay)** and **throughput (bandwidth)** is essential for analyzing performance and ensuring efficient communication.
 
@@ -18,7 +18,7 @@ The system is designed to:
 
 ---
 
-## 📂 Project Structure
+##  Project Structure
 
 ```
 SDN-Network-Delay-Measurement-Tool/
@@ -33,7 +33,7 @@ SDN-Network-Delay-Measurement-Tool/
 
 ---
 
-## 🎯 Objectives
+##  Objectives
 
 * Implement a **learning switch** using OpenFlow 1.3
 * Measure **RTT using ICMP (ping)**
@@ -43,7 +43,7 @@ SDN-Network-Delay-Measurement-Tool/
 
 ---
 
-## 🏗️ Network Topology
+## Network Topology
 
 ```
 h1 ---\
@@ -55,7 +55,7 @@ h2 ---/               \--- h3
                         \--- h4
 ```
 
-### 🔗 Link Configuration
+###  Link Configuration
 
 | Link  | Bandwidth | Delay |
 | ----- | --------- | ----- |
@@ -67,7 +67,7 @@ h2 ---/               \--- h3
 
 ---
 
-## ⚙️ System Requirements
+##  System Requirements
 
 - OS: Ubuntu / Linux (Recommended)
 - Python: 3.9
@@ -78,25 +78,25 @@ h2 ---/               \--- h3
 
 ---
 
-## ⚠️ System Requirements (IMPORTANT)
+##  System Requirements (IMPORTANT)
 
 This project is designed to run **preferably on Linux**.
 
-### 🐧 Recommended Environment
+###  Recommended Environment
 
 * Ubuntu / Debian-based Linux system
 * Python **3.9 (recommended for compatibility with Ryu & Mininet)**
 
-### ❗ Why Linux?
+###  Why Linux?
 
 * Mininet relies on Linux kernel features (network namespaces, tc, etc.)
 * Running on Windows/macOS may cause failures or require virtualization
 
 ---
 
-## 🚀 How to Run
+## How to Run
 
-### 🔧 Step 1: Install Dependencies
+### Step 1: Install Dependencies
 
 ```
 sudo apt update
@@ -107,7 +107,7 @@ pip install -r requirements.txt
 
 ---
 
-### ▶️ Step 2: Start Controller (Terminnal 1)
+### Step 2: Start Controller (Terminnal 1)
 
 ```
 ryu-manager src/controller.py
@@ -115,7 +115,7 @@ ryu-manager src/controller.py
 
 ---
 
-### ▶️ Step 3: Run Topology  (Terminnal 2)
+### Step 3: Run Topology  (Terminnal 2)
 
 ```
 sudo python3 src/topology.py
@@ -123,7 +123,7 @@ sudo python3 src/topology.py
 
 ---
 
-## 🧪 Execution Modes (IMPORTANT)
+## Execution Modes (IMPORTANT)
 
 The project supports **two modes**:
 
@@ -161,7 +161,7 @@ measure_iperf(net, block_enabled=False)
 
 The controller blocks:
 
-```id="vx7q41"
+```
 h1 → h4 ❌
 ```
 
@@ -177,7 +177,7 @@ self.block_enabled = True
 
 In `topology.py`:
 
-```python id="iq3q3x"
+```
 measure_iperf(net, block_enabled=True)
 ```
 
@@ -193,7 +193,7 @@ measure_iperf(net, block_enabled=True)
 
 ---
 
-### ⚠️ Important Notes
+###  Important Notes
 
 * Blocking is **directional** (only h1 → h4)
 * iperf test for blocked path is skipped to prevent hanging
@@ -201,25 +201,25 @@ measure_iperf(net, block_enabled=True)
 
 ---
 
-## 📊 Performance Measurement
+## Performance Measurement
 
 ---
 
-### 📡 RTT Measurement
+###  RTT Measurement
 
 * Uses ICMP (`ping`)
 * Extracts min / avg / max / packet loss
 
 ---
 
-### 🚀 Throughput Measurement
+###  Throughput Measurement
 
 * Uses `iperf`
 * Shows bandwidth differences based on topology
 
 ---
 
-## 🧠 Key Observations
+## Key Observations
 
 * RTT increases with number of hops
 * Throughput is limited by bottleneck link (50 Mbps)
@@ -228,7 +228,7 @@ measure_iperf(net, block_enabled=True)
 
 ---
 
-## ⚠️ Common Notes
+##  Common Notes
 
 * `sch_htb quantum` warnings can be ignored
 * Always start controller before topology
@@ -236,7 +236,7 @@ measure_iperf(net, block_enabled=True)
 
 ---
 
-## 🏁 Conclusion
+##  Conclusion
 
 This project demonstrates how SDN enables:
 
