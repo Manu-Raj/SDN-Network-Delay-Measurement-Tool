@@ -98,7 +98,10 @@ pip install -r requirements.txt
 
 ---
 
-###  Step 2: Start Controller 
+###  Step 2: Start Controller (Terminal 1)
+
+<img width="1273" height="332" alt="image" src="https://github.com/user-attachments/assets/69826f93-7ecc-48b0-adc8-dd7901f40000" />
+
 
 ```
 ryu-manager src/controller.py
@@ -106,7 +109,10 @@ ryu-manager src/controller.py
 
 ---
 
-###  Step 3: Run Topology
+###  Step 3: Run Topology (Terminal 2)
+
+<img width="1264" height="379" alt="image" src="https://github.com/user-attachments/assets/d88f1a6a-0f46-477b-b113-5fdd6e18f2a7" />
+
 
 ```
 sudo python3 src/topology.py
@@ -121,6 +127,9 @@ The project supports **two modes**:
 ---
 
 # 🟢 1. Normal Mode (Default)
+
+<img width="1266" height="270" alt="image" src="https://github.com/user-attachments/assets/e3a3c061-b203-4c4e-b7fb-06b6015e80b0" />
+
 
 All traffic is allowed.
 
@@ -149,6 +158,9 @@ measure_iperf(net, block_enabled=False)
 ---
 
 # 🔴 2. Blocking Mode (SDN Policy Demonstration)
+
+<img width="1264" height="288" alt="image" src="https://github.com/user-attachments/assets/48c050d2-c762-446a-825a-132ce91a9606" />
+
 
 The controller blocks:
 
@@ -197,6 +209,9 @@ measure_iperf(net, block_enabled=True)
 ---
 
 ### 📡 RTT Measurement
+Sample Output
+<img width="592" height="206" alt="image" src="https://github.com/user-attachments/assets/ff4645ab-50bb-40b4-9fd4-229ec5249682" />
+
 
 * Uses ICMP (`ping`)
 * Extracts min / avg / max / packet loss
@@ -204,6 +219,10 @@ measure_iperf(net, block_enabled=True)
 ---
 
 ###  Throughput Measurement
+Sample Output
+<img width="588" height="158" alt="image" src="https://github.com/user-attachments/assets/6c3f3429-5338-4bf6-93c4-ecf1cca99286" />
+
+
 
 * Uses `iperf`
 * Shows bandwidth differences based on topology
