@@ -133,6 +133,9 @@ The project supports **two modes**:
 
 All traffic is allowed.
 
+<img width="602" height="199" alt="image" src="https://github.com/user-attachments/assets/73263bd1-3cf2-46e7-b68c-f96b2ac736fd" />
+
+
 ### ✔ Configure:
 
 In `controller.py`:
@@ -163,6 +166,9 @@ measure_iperf(net, block_enabled=False)
 
 
 The controller blocks:
+
+<img width="602" height="199" alt="image" src="https://github.com/user-attachments/assets/4a1b5ee3-7807-4185-8476-84aef7714b6e" />
+
 
 ```id="vx7q41"
 h1 → h4 ❌
