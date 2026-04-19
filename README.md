@@ -147,13 +147,13 @@ The project supports **two modes**:
 
 In `controller.py`:
 
-```python id="mg7i6h"
+```
 self.block_enabled = False
 ```
 
 In `topology.py`:
 
-```python id="2q91rc"
+```
 measure_iperf(net, block_enabled=False)
 ```
 
@@ -177,7 +177,7 @@ measure_iperf(net, block_enabled=False)
 <img width="602" height="199" alt="image" src="https://github.com/user-attachments/assets/4a1b5ee3-7807-4185-8476-84aef7714b6e" />
 
 
-```id="vx7q41"
+```
 h1 → h4 ❌
 ```
 
@@ -187,13 +187,13 @@ h1 → h4 ❌
 
 In `controller.py`:
 
-```python id="shp6u8"
+```
 self.block_enabled = True
 ```
 
 In `topology.py`:
 
-```python id="iq3q3x"
+```
 measure_iperf(net, block_enabled=True)
 ```
 
@@ -239,6 +239,7 @@ Sample Output
 
 * Uses `iperf`
 * Shows bandwidth differences based on topology
+* When Blocking Mode is enabled h1->h4 will not be shown
 
 ---
 
