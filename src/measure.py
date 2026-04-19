@@ -2,6 +2,7 @@ def measure_all(net):
     import re
     import time
 
+    # Host pairs for RTT measurement (ping)
     HOST_PAIRS = [
         ("h1", "10.0.0.2"),
         ("h1", "10.0.0.3"),
@@ -9,8 +10,9 @@ def measure_all(net):
         ("h3", "10.0.0.4"),
     ]
 
-    PING_COUNT = 10
+    PING_COUNT = 10  # number of ICMP packets
 
+    # Parse ping output to extract RTT stats
     def parse_rtt(output):
         match = re.search(
             r"rtt min/avg/max/mdev = ([\d.]+)/([\d.]+)/([\d.]+)/([\d.]+)", output
@@ -31,8 +33,11 @@ def measure_all(net):
     print(f"{'Pair':<15} {'Min':>7} {'Avg':>7} {'Max':>7} {'Loss':>6}")
     print("-" * 50)
 
+    # Iterate through host pairs and run ping
     for src, dst in HOST_PAIRS:
         host = net.get(src)
+
+        # Execute ping command inside Mininet host
         output = host.cmd(f"ping -c {PING_COUNT} {dst}")
 
         rtt = parse_rtt(output)
@@ -46,9 +51,7 @@ def measure_all(net):
         else:
             print(f"{label:<15} FAILED")
 
-        time.sleep(1)
-
-
+        time.sleep(1)  # small delay between tests
 
 
 def measure_iperf(net, block_enabled=False):
@@ -59,10 +62,12 @@ def measure_iperf(net, block_enabled=False):
     print(f"{'Pair':<15} {'Bandwidth':>10}")
     print("-" * 30)
 
+    # Default test
     tests = [
         ("h1", "h2"),
     ]
 
+    # Only test h1→h4 if not blocked
     if not block_enabled:
         tests.append(("h1", "h4"))
 
@@ -70,12 +75,14 @@ def measure_iperf(net, block_enabled=False):
         server = net.get(dst)
         client = net.get(src)
 
+        # Start iperf server in background
         server.cmd("iperf -s -p 5001 &")
         time.sleep(1)
 
+        # Run iperf client
         result = client.cmd(f"iperf -c {server.IP()} -p 5001 -t 5")
 
-        # Extract bandwidth
+        # Extract bandwidth using regex
         match = re.search(r"([\d.]+)\s+Mbits/sec", result)
 
         if match:
@@ -84,5 +91,6 @@ def measure_iperf(net, block_enabled=False):
         else:
             print(f"{src+'->'+dst:<15} FAILED")
 
+        # Stop iperf server
         server.cmd("pkill -f iperf")
         time.sleep(1)
