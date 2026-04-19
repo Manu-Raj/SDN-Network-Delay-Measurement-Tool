@@ -1,6 +1,6 @@
 #  SDN-Based Network Delay & Performance Measurement Tool
 
-## 📌 Overview
+##  Overview
 
 This project implements a **Software Defined Networking (SDN)** application using the **Ryu controller** and **Mininet emulator** to:
 
@@ -10,23 +10,23 @@ This project implements a **Software Defined Networking (SDN)** application usin
 
 ---
 
-## ⚠️ System Requirements (IMPORTANT)
+##  System Requirements (IMPORTANT)
 
 This project is designed to run **preferably on Linux**.
 
-### 🐧 Recommended Environment
+###  Recommended Environment
 
 * Ubuntu / Debian-based Linux system
 * Python **3.9 (recommended for compatibility with Ryu & Mininet)**
 
-### ❗ Why Linux?
+###  Why Linux?
 
 * Mininet relies on Linux kernel features (network namespaces, tc, etc.)
 * Running on Windows/macOS may cause failures or require virtualization
 
 ---
 
-## 🎯 Objectives
+##  Objectives
 
 * Implement a **learning switch** using OpenFlow 1.3
 * Measure **RTT using ICMP (ping)**
@@ -36,7 +36,7 @@ This project is designed to run **preferably on Linux**.
 
 ---
 
-## 🏗️ Network Topology
+##  Network Topology
 
 ```
 h1 ---\
@@ -48,7 +48,7 @@ h2 ---/               \--- h3
                         \--- h4
 ```
 
-### 🔗 Link Configuration
+###  Link Configuration
 
 | Link  | Bandwidth | Delay |
 | ----- | --------- | ----- |
@@ -60,7 +60,7 @@ h2 ---/               \--- h3
 
 ---
 
-## ⚙️ Technologies Used
+##  Technologies Used
 
 *  Python 3.9
 *  Ryu SDN Controller
@@ -70,7 +70,7 @@ h2 ---/               \--- h3
 
 ---
 
-## 📂 Project Structure
+##  Project Structure
 
 ```
 SDN-Network-Delay-Measurement-Tool/
@@ -85,9 +85,9 @@ SDN-Network-Delay-Measurement-Tool/
 
 ---
 
-## 🚀 How to Run
+##  How to Run
 
-### 🔧 Step 1: Install Dependencies
+###  Step 1: Install Dependencies
 
 ```
 sudo apt update
@@ -98,7 +98,7 @@ pip install -r requirements.txt
 
 ---
 
-### ▶️ Step 2: Start Controller 
+###  Step 2: Start Controller 
 
 ```
 ryu-manager src/controller.py
@@ -106,7 +106,7 @@ ryu-manager src/controller.py
 
 ---
 
-### ▶️ Step 3: Run Topology
+###  Step 3: Run Topology
 
 ```
 sudo python3 src/topology.py
@@ -114,7 +114,7 @@ sudo python3 src/topology.py
 
 ---
 
-## 🧪 Execution Modes (IMPORTANT)
+##  Execution Modes (IMPORTANT)
 
 The project supports **two modes**:
 
@@ -184,7 +184,7 @@ measure_iperf(net, block_enabled=True)
 
 ---
 
-### ⚠️ Important Notes
+###  Important Notes
 
 * Blocking is **directional** (only h1 → h4)
 * iperf test for blocked path is skipped to prevent hanging
@@ -192,7 +192,7 @@ measure_iperf(net, block_enabled=True)
 
 ---
 
-## 📊 Performance Measurement
+##  Performance Measurement
 
 ---
 
@@ -203,62 +203,18 @@ measure_iperf(net, block_enabled=True)
 
 ---
 
-### 🚀 Throughput Measurement
+###  Throughput Measurement
 
 * Uses `iperf`
 * Shows bandwidth differences based on topology
 
 ---
 
-## 🧠 Key Observations
+##  Key Observations
 
 * RTT increases with number of hops
 * Throughput is limited by bottleneck link (50 Mbps)
 * SDN enables dynamic traffic control
 * Policy enforcement is achieved via OpenFlow rules
-
----
-
-## ⚠️ Common Notes
-
-* `sch_htb quantum` warnings can be ignored
-* Always start controller before topology
-* Ensure Python 3.9 environment
-
----
-
-## 🎤 Viva Highlights
-
-* OpenFlow match-action model
-* Flow priority and rule overriding
-* RTT vs throughput difference
-* SDN control plane vs data plane
-
----
-
-## 📸 Screenshots
-
-Include:
-
-* Topology running
-* RTT output
-* iperf output
-* Blocking demonstration
-
----
-
-## 🏁 Conclusion
-
-This project demonstrates how SDN enables:
-
-* Programmable networks
-* Performance monitoring
-* Dynamic policy enforcement
-
----
-
-## 👨‍💻 Author
-
-Manu
 
 ---
